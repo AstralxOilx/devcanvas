@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createConnection, createFlowNode, createFlowTemplate, flowNodeOptions, portPoint, removeFlowItem, resolveConnection } from '../src/features/canvas/flowchart/index.ts'
+import { createConnection, createFlowNode, createFlowTemplate, flowNodeOptions, flowTemplateOptions, portPoint, removeFlowItem, resolveConnection } from '../src/features/canvas/flowchart/index.ts'
 import { defaultStyle, readBoard } from '../src/features/canvas/model.ts'
 
 test('connectors follow moved nodes without mutating stored geometry', () => {
@@ -73,4 +73,16 @@ test('the complete symbol library creates unique, valid connectable nodes', () =
   assert.deepEqual(nodes.map(node => node.flowKind), flowNodeOptions.map(option => option.kind))
   assert.ok(nodes.every(node => node.w > 0 && node.h > 0 && node.text.length > 0))
   for (let index = 1; index < nodes.length; index++) assert.ok(createConnection({ from: nodes[index - 1].id, to: nodes[index].id }, nodes, defaultStyle))
+})
+
+test('each flowchart example creates valid nodes and linked edges', () => {
+  assert.deepEqual(flowTemplateOptions.map(template => template.id), ['simple', 'decision', 'data'])
+  for (const template of flowTemplateOptions) {
+    const board = createFlowTemplate({ x: 100, y: 100 }, defaultStyle, template.id)
+    const nodes = board.filter(shape => shape.flowKind)
+    const edges = board.filter(shape => shape.connection)
+    assert.deepEqual(nodes.map(node => node.flowKind), template.kinds)
+    assert.equal(edges.length, nodes.length - (template.id === 'decision' ? 1 : 1))
+    assert.ok(edges.every(edge => resolveConnection(edge, board).points))
+  }
 })

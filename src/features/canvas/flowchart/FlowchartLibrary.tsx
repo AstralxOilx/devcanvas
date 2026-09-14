@@ -1,16 +1,24 @@
-import { IconArrowRight, IconPlus } from '@tabler/icons-react'
+import { IconCheck, IconLine, IconSitemap } from '@tabler/icons-react'
 import type { FlowNodeKind } from '../model'
-import { flowNodeOptions } from '.'
+import { flowNodeOptions, flowTemplateOptions } from '.'
+import type { FlowTemplateId } from '.'
 import { FlowchartShape } from './FlowchartShape'
 import './flowchart.css'
 
-export function FlowchartLibrary({ selectedKind, connecting, onChoose, onConnect, onTemplate }: { selectedKind: FlowNodeKind | null; connecting: boolean; onChoose: (kind: FlowNodeKind) => void; onConnect: () => void; onTemplate: () => void }) {
+function TemplatePreview({ template }: { template: FlowTemplateId }) {
+  const common = { stroke: 'currentColor', strokeWidth: 1.5, fill: 'var(--surface)', strokeLinejoin: 'round' as const }
+  if (template === 'decision') return <svg className="flow-template-preview" viewBox="0 0 120 76" aria-hidden="true"><g {...common}><g transform="translate(46 2)"><FlowchartShape kind="terminator" width={28} height={8} /></g><path d="M60 10V16" fill="none" /><g transform="translate(42 16)"><FlowchartShape kind="process" width={36} height={10} /></g><path d="M60 26V33" fill="none" /><g transform="translate(51 33)"><FlowchartShape kind="decision" width={18} height={14} /></g><path d="M51 40H23V54M69 40H97V54" fill="none" /><g transform="translate(9 54)"><FlowchartShape kind="terminator" width={28} height={8} /></g><g transform="translate(83 54)"><FlowchartShape kind="terminator" width={28} height={8} /></g></g><text x="35" y="52" fill="currentColor">Yes</text><text x="77" y="52" fill="currentColor">No</text></svg>
+  if (template === 'data') return <svg className="flow-template-preview" viewBox="0 0 120 76" aria-hidden="true"><g {...common}><g transform="translate(42 2)"><FlowchartShape kind="manual-input" width={36} height={10} /></g><path d="M60 12V19" fill="none" /><g transform="translate(42 19)"><FlowchartShape kind="process" width={36} height={10} /></g><path d="M60 29V36" fill="none" /><g transform="translate(42 36)"><FlowchartShape kind="database" width={36} height={10} /></g><path d="M60 46V53" fill="none" /><g transform="translate(42 53)"><FlowchartShape kind="display" width={36} height={10} /></g></g></svg>
+  return <svg className="flow-template-preview" viewBox="0 0 120 76" aria-hidden="true"><g {...common}><g transform="translate(46 5)"><FlowchartShape kind="terminator" width={28} height={9} /></g><path d="M60 14V25" fill="none" /><g transform="translate(42 25)"><FlowchartShape kind="process" width={36} height={11} /></g><path d="M60 36V48" fill="none" /><g transform="translate(46 48)"><FlowchartShape kind="terminator" width={28} height={9} /></g></g></svg>
+}
+
+export function FlowchartLibrary({ selectedKind, connecting, onChoose, onConnect, onTemplate }: { selectedKind: FlowNodeKind | null; connecting: boolean; onChoose: (kind: FlowNodeKind) => void; onConnect: () => void; onTemplate: (template: FlowTemplateId) => void }) {
+  const groups = [...new Set(flowNodeOptions.map(option => option.group))]
   return <section className="flow-library" aria-label="Flowchart tools">
-    <div className="flow-library-heading"><strong>Flowchart</strong><span>BUILD A FLOW</span></div>
-    <p>เลือกรูปทรง แล้วคลิกบน Canvas เพื่อวาง</p>
-    {[...new Set(flowNodeOptions.map(option => option.group))].map(group => <div className="flow-symbol-group" key={group}><h3>{group}</h3><div className="flow-node-grid">{flowNodeOptions.filter(option => option.group === group).map(option => <button type="button" key={option.kind} aria-pressed={selectedKind === option.kind} className={selectedKind === option.kind ? 'active' : ''} onClick={() => onChoose(option.kind)}><svg className="flow-node-preview" viewBox="-3 -3 196 94" aria-hidden="true"><g stroke="currentColor" strokeWidth="4" fill="var(--accent-soft)" strokeLinejoin="round"><FlowchartShape kind={option.kind} width={190} height={88} /></g></svg><strong>{option.name}</strong><small>{option.description}</small></button>)}</div></div>)}
-    <button type="button" className={`flow-connect-button ${connecting ? 'active' : ''}`} aria-pressed={connecting} onClick={onConnect}><IconArrowRight size={18} /><span>เชื่อมโหนด</span><kbd>C</kbd></button>
-    <p>คลิกโหนดต้นทาง → ปลายทาง หรือคลิกจุดเชื่อมบนขอบโหนด<br />ดับเบิลคลิกข้อความเพื่อแก้ไข</p>
-    <button type="button" className="flow-template-button" onClick={onTemplate}><IconPlus size={16} />เพิ่ม Flowchart ตัวอย่าง</button>
+    <div className="flow-library-hero"><span className="flow-library-icon"><IconSitemap size={18} /></span><div><span>DIAGRAMS</span><strong>Flowchart library</strong><p>เลือกรูปทรง แล้วคลิกบน Canvas เพื่อวาง</p></div></div>
+    <div className="flow-library-actions"><button type="button" className={`flow-connect-button ${connecting ? 'active' : ''}`} aria-pressed={connecting} onClick={onConnect}><IconLine size={17} /><span>เชื่อมโหนด</span>{connecting && <IconCheck size={14} />}</button></div>
+    {groups.map(group => { const options = flowNodeOptions.filter(option => option.group === group); return <div className="flow-symbol-group" key={group}><div className="flow-symbol-heading"><h3>{group}</h3><span>{options.length}</span></div><div className="flow-node-grid">{options.map(option => <button type="button" key={option.kind} aria-pressed={selectedKind === option.kind} className={selectedKind === option.kind ? 'active' : ''} onClick={() => onChoose(option.kind)}><svg className="flow-node-preview" viewBox="-4 -4 198 96" aria-hidden="true"><g stroke="currentColor" strokeWidth="2.25" fill="var(--surface)" strokeLinejoin="round"><FlowchartShape kind={option.kind} width={190} height={88} /></g></svg><span className="flow-node-copy"><strong>{option.name}</strong><small>{option.description}</small></span>{selectedKind === option.kind && <IconCheck className="flow-selected-icon" size={13} />}</button>)}</div></div> })}
+    <div className="flow-template-section"><div className="flow-symbol-heading"><h3>Examples</h3><span>{flowTemplateOptions.length}</span></div><div className="flow-template-picker" aria-label="Flowchart examples">{flowTemplateOptions.map(template => <button type="button" key={template.id} onClick={() => onTemplate(template.id)}><TemplatePreview template={template.id} /><span><strong>{template.name}</strong><small>{template.description}</small></span></button>)}</div></div>
+    <p className="flow-library-note">เลือก Connect nodes แล้วคลิกต้นทางและปลายทาง<br />ดับเบิลคลิกข้อความเพื่อแก้ไข</p>
   </section>
 }

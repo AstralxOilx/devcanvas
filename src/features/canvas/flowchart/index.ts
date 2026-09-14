@@ -1,6 +1,12 @@
 import type { Connection, DrawingStyle, FlowNodeKind, Port, Shape } from '../model'
 
 export type FlowNodeOption = { kind: FlowNodeKind; name: string; description: string; group: 'Basic' | 'Data & documents' | 'Storage' | 'Manual & special' | 'Connectors & logic' }
+export type FlowTemplateId = 'simple' | 'decision' | 'data'
+export const flowTemplateOptions: { id: FlowTemplateId; name: string; description: string; kinds: FlowNodeKind[] }[] = [
+  { id: 'simple', name: 'Simple process', description: 'เริ่มต้น → ขั้นตอน → จบ', kinds: ['terminator', 'process', 'terminator'] },
+  { id: 'decision', name: 'Decision flow', description: 'มีเงื่อนไข Yes / No', kinds: ['terminator', 'process', 'decision', 'terminator', 'terminator'] },
+  { id: 'data', name: 'Data workflow', description: 'รับข้อมูล → ประมวลผล → เก็บ → แสดง', kinds: ['manual-input', 'process', 'database', 'display'] },
+]
 export const flowNodeOptions: FlowNodeOption[] = [
   { kind: 'terminator', name: 'Start / End', description: 'จุดเริ่มต้นหรือสิ้นสุด', group: 'Basic' }, { kind: 'process', name: 'Process', description: 'ขั้นตอนการทำงาน', group: 'Basic' },
   { kind: 'decision', name: 'Decision', description: 'เงื่อนไขและทางเลือก', group: 'Basic' }, { kind: 'input-output', name: 'Input / Output', description: 'รับหรือส่งข้อมูล', group: 'Basic' },
@@ -46,9 +52,14 @@ export function createConnection(connection: Connection, shapes: Shape[], style:
   return { id: crypto.randomUUID(), type: 'arrow', x: 0, y: 0, w: 0, h: 0, ...style, fill: 'none', text: '', connection }
 }
 export function removeFlowItem(shapes: Shape[], id: string) { return shapes.filter(shape => shape.id !== id && shape.connection?.from !== id && shape.connection?.to !== id) }
-export function createFlowTemplate(origin: { x: number; y: number }, style: DrawingStyle): Shape[] {
-  const centers = [[280, 0], [280, 130], [280, 300], [70, 480], [490, 480]], kinds: FlowNodeKind[] = ['terminator', 'process', 'decision', 'terminator', 'terminator'], labels = ['Start', 'Do something', 'Ready?', 'Done', 'Try again']
+export function createFlowTemplate(origin: { x: number; y: number }, style: DrawingStyle, template: FlowTemplateId = 'decision'): Shape[] {
+  const templates: Record<FlowTemplateId, { centers: number[][]; kinds: FlowNodeKind[]; labels: string[]; edges: [number, number, string][] }> = {
+    simple: { centers: [[280, 0], [280, 145], [280, 290]], kinds: ['terminator', 'process', 'terminator'], labels: ['Start', 'Do something', 'Done'], edges: [[0, 1, ''], [1, 2, '']] },
+    decision: { centers: [[280, 0], [280, 130], [280, 300], [70, 480], [490, 480]], kinds: ['terminator', 'process', 'decision', 'terminator', 'terminator'], labels: ['Start', 'Do something', 'Ready?', 'Done', 'Try again'], edges: [[0, 1, ''], [1, 2, ''], [2, 3, 'Yes'], [2, 4, 'No']] },
+    data: { centers: [[280, 0], [280, 145], [280, 290], [280, 435]], kinds: ['manual-input', 'process', 'database', 'display'], labels: ['Enter data', 'Process data', 'Store data', 'Show result'], edges: [[0, 1, ''], [1, 2, ''], [2, 3, '']] },
+  }
+  const { centers, kinds, labels, edges: links } = templates[template]
   const nodes = kinds.map((kind, index) => ({ ...createFlowNode(kind, { x: origin.x + centers[index][0], y: origin.y + centers[index][1] }, style), text: labels[index] }))
-  const edges = [[0, 1, ''], [1, 2, ''], [2, 3, 'Yes'], [2, 4, 'No']].map(([from, to, text]) => ({ ...createConnection({ from: nodes[Number(from)].id, to: nodes[Number(to)].id }, nodes, style)!, text: String(text) }))
+  const edges = links.map(([from, to, text]) => ({ ...createConnection({ from: nodes[from].id, to: nodes[to].id }, nodes, style)!, text }))
   return [...edges, ...nodes]
 }

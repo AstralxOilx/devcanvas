@@ -1,19 +1,38 @@
 /* Flowchart library controls and canvas connection ports. */
-.flow-library { padding: 0 14px 18px; }
-.flow-library-heading { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-.flow-library-heading strong { font-size: 13px; }
-.flow-library-heading span { font-size: 8px; letter-spacing: .8px; color: var(--accent); }
-.flow-library p { font-size: 10px; line-height: 1.8; color: var(--muted); }
-.flow-symbol-group h3 { margin: 18px 0 8px; color: var(--text-secondary); font-size: 9px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; }
-.flow-node-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
-.flow-node-grid button { display: flex; align-items: center; flex-direction: column; padding: 16px 4px 12px; gap: 7px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); }
-.flow-node-grid button:hover, .flow-node-grid button.active { background: var(--accent-soft); border-color: var(--accent-border); }
-.flow-node-grid strong { font-size: 10px; font-weight: 500; }
-.flow-node-grid small { font-size: 8px; color: var(--muted); }
-.flow-node-preview { width: 52px; height: 31px; color: var(--accent); margin-bottom: 4px; overflow: visible; }
-.flow-connect-button, .flow-template-button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; width: 100%; font-size: 11px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--accent); }
-.flow-connect-button.active, .flow-connect-button:hover, .flow-template-button:hover { background: var(--accent-soft); border-color: var(--accent-border); }
-.flow-connect-button kbd { margin-left: auto; }
+.flow-library { padding: 4px 14px 20px; }
+.flow-library-hero { display: flex; align-items: flex-start; gap: 10px; padding: 13px 11px; border-radius: 10px; background: linear-gradient(135deg, var(--accent-soft), var(--surface-soft)); }
+.flow-library-icon { display: grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; border-radius: 8px; background: var(--surface); color: var(--accent); }
+.flow-library-hero > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.flow-library-hero span:not(.flow-library-icon) { color: var(--accent); font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+.flow-library-hero strong { color: var(--text); font-size: 12px; font-weight: 650; }
+.flow-library-hero p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.flow-library-actions { display: grid; grid-template-columns: 1fr; gap: 7px; margin: 10px 0 4px; }
+.flow-symbol-group { margin-top: 17px; }
+.flow-symbol-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.flow-symbol-heading h3 { margin: 0; color: var(--text-secondary); font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.flow-symbol-heading > span { min-width: 17px; padding: 2px 5px; border-radius: 99px; background: var(--surface-soft); color: var(--muted); font-size: 8px; text-align: center; }
+.flow-node-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: 0; }
+.flow-node-grid button { position: relative; display: flex; align-items: center; flex-direction: column; min-height: 94px; padding: 10px 7px 8px; gap: 6px; border: 1px solid transparent; border-radius: 9px; background: var(--surface-soft); color: var(--text-secondary); text-align: center; }
+.flow-node-grid button:hover, .flow-node-grid button.active { background: var(--accent-soft); color: var(--accent); }
+.flow-node-grid button.active { border-color: var(--accent-border); }
+.flow-node-copy { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 3px; }
+.flow-node-grid strong { overflow: hidden; font-size: 9px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.flow-node-grid small { display: -webkit-box; overflow: hidden; color: var(--muted); font-size: 8px; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.flow-node-preview { flex: 0 0 auto; width: 54px; height: 30px; color: var(--accent); overflow: visible; }
+.flow-selected-icon { position: absolute; top: 5px; right: 5px; }
+.flow-connect-button, .flow-template-button { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 35px; padding: 8px; border: 1px solid transparent; border-radius: 8px; background: var(--surface-soft); color: var(--text-secondary); font-size: 10px; font-weight: 600; }
+.flow-connect-button.active, .flow-connect-button:hover, .flow-template-button:hover { background: var(--accent-soft); color: var(--accent); }
+.flow-connect-button.active { border-color: var(--accent-border); }
+.flow-template-section { margin-top: 18px; }
+.flow-template-picker { display: grid; gap: 5px; margin: 0 0 3px; padding: 7px; border-radius: 9px; background: var(--surface-soft); }
+.flow-template-picker button { display: flex; align-items: center; flex-direction: column; gap: 5px; width: 100%; padding: 9px 7px; border-radius: 7px; background: var(--surface); color: var(--text-secondary); text-align: center; }
+.flow-template-picker button:hover, .flow-template-picker button:focus-visible { background: var(--accent-soft); color: var(--accent); outline: 0; }
+.flow-template-picker .flow-template-preview { flex: 0 0 auto; width: 100%; height: 62px; color: var(--accent); overflow: visible; }
+.flow-template-preview text { font-family: inherit; font-size: 6px; text-anchor: middle; }
+.flow-template-picker button > span { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 2px; }
+.flow-template-picker strong { font-size: 9px; font-weight: 650; }
+.flow-template-picker small { overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.flow-library-note { margin: 18px 2px 0; color: var(--muted); font-size: 8px; line-height: 1.7; }
 .tool-connect .drawing-canvas, .tool-flowchart .drawing-canvas { cursor: crosshair; }
 .flow-connection-port { cursor: crosshair; }
 .flow-connection-port:hover { fill: var(--accent); r: 7; }

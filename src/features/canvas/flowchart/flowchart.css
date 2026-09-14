@@ -1,0 +1,19 @@
+/* Flowchart library controls and canvas connection ports. */
+.flow-library { padding: 0 14px 18px; }
+.flow-library-heading { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+.flow-library-heading strong { font-size: 13px; }
+.flow-library-heading span { font-size: 8px; letter-spacing: .8px; color: var(--accent); }
+.flow-library p { font-size: 10px; line-height: 1.8; color: var(--muted); }
+.flow-symbol-group h3 { margin: 18px 0 8px; color: var(--text-secondary); font-size: 9px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; }
+.flow-node-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.flow-node-grid button { display: flex; align-items: center; flex-direction: column; padding: 16px 4px 12px; gap: 7px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); }
+.flow-node-grid button:hover, .flow-node-grid button.active { background: var(--accent-soft); border-color: var(--accent-border); }
+.flow-node-grid strong { font-size: 10px; font-weight: 500; }
+.flow-node-grid small { font-size: 8px; color: var(--muted); }
+.flow-node-preview { width: 52px; height: 31px; color: var(--accent); margin-bottom: 4px; overflow: visible; }
+.flow-connect-button, .flow-template-button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; width: 100%; font-size: 11px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--accent); }
+.flow-connect-button.active, .flow-connect-button:hover, .flow-template-button:hover { background: var(--accent-soft); border-color: var(--accent-border); }
+.flow-connect-button kbd { margin-left: auto; }
+.tool-connect .drawing-canvas, .tool-flowchart .drawing-canvas { cursor: crosshair; }
+.flow-connection-port { cursor: crosshair; }
+.flow-connection-port:hover { fill: var(--accent); r: 7; }

@@ -1,0 +1,10 @@
+:root { font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--canvas); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-weight: 400; font-size: 13px; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 360px; }
+button, input { font: inherit; }
+button { cursor: pointer; color: inherit; border: 0; transition: background .15s, color .15s, box-shadow .15s; }
+button:disabled { opacity: .35; cursor: default; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent-border); outline-offset: 3px; }
+button svg { flex-shrink: 0; }
+input { min-width: 0; }
+::selection { background: var(--accent-hover); }

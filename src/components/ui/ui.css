@@ -1,0 +1,37 @@
+.ui-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 7px; padding: 9px 12px; font-size: 12px; font-weight: 550; border: 1px solid transparent; }
+.ui-button--primary { color: var(--accent); background: var(--accent-soft); }
+.ui-button--primary:hover { background: var(--accent-hover); }
+.ui-button--secondary { background: var(--surface); border-color: var(--border); }
+.ui-button--ghost { background: transparent; }
+.ui-button--secondary:hover, .ui-button--ghost:hover { background: var(--surface-hover); }
+.ui-icon-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; color: var(--muted); width: 28px; height: 28px; border-radius: 5px; padding: 4px; }
+.ui-icon-button:hover:not(:disabled) { color: var(--accent); background: var(--surface-hover); }
+.ui-icon-button.is-active { color: var(--accent); background: var(--accent-soft); }
+.ui-panel { background: var(--surface); display: flex; flex-direction: column; min-height: 0; }
+.ui-panel-heading { display: flex; align-items: center; justify-content: space-between; padding: 17px 17px 15px; font-size: 12px; font-weight: 600; }
+.ui-toolbar { display: flex; align-items: center; gap: 3px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 4px 16px var(--shadow); }
+.ui-tabs { display: flex; gap: 20px; padding: 0 16px; border-bottom: 1px solid var(--border); }
+.ui-tabs > button { display: flex; gap: 6px; align-items: center; font-size: 11px; position: relative; background: transparent; color: var(--muted); padding: 0 0 12px; }
+.ui-tabs > button.is-active { color: var(--accent); font-weight: 600; }
+.ui-tabs > button.is-active:after { content: ''; position: absolute; height: 2px; background: var(--accent); left: 0; right: 0; bottom: -1px; border-radius: 2px; }
+.ui-badge { background: var(--accent-soft); border-radius: 4px; padding: 1px 4px; font-size: 9px; }
+.ui-property-field { margin: 0 18px 24px; }
+.ui-property-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); margin-bottom: 12px; }
+.ui-colors { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ui-swatch { height: 23px; width: 23px; border-radius: 5px; border: 1px solid var(--border); position: relative; }
+.ui-swatch.is-selected:after { position: absolute; content: ''; inset: -4px; border: 1px solid var(--accent-border); border-radius: 7px; }
+.ui-swatch.is-transparent { background-image: linear-gradient(135deg, transparent 46%, #e4b9bd 48%, #e4b9bd 52%, transparent 54%); border-color: var(--border); }
+.ui-color-divider { width: 1px; height: 22px; background: var(--border); margin: 0 3px; }
+.ui-custom-color { width: 23px; height: 23px; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+.ui-custom-color input { opacity: 0; width: 100%; height: 100%; padding: 0; cursor: pointer; }
+.ui-segmented { display: flex; gap: 7px; }
+.ui-segmented .ui-icon-button { background: var(--surface-soft); border: 1px solid var(--border); width: 40px; height: 34px; }
+.ui-segmented .ui-icon-button.is-active { background: var(--accent-soft); border-color: var(--accent-border); }
+.ui-select { width: 100%; height: 34px; padding: 0 9px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-soft); color: var(--text-secondary); font: inherit; font-size: 11px; cursor: pointer; }
+.ui-select:focus { outline: 2px solid var(--accent-border); outline-offset: 1px; }
+.ui-toggle { width: 29px; height: 16px; border-radius: 20px; background: var(--border); padding: 3px; }
+.ui-toggle span { display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); transition: transform .15s; }
+.ui-toggle.is-on { background: var(--accent); }
+.ui-toggle.is-on span { transform: translateX(13px); }
+.ui-statusbar { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding: 0 18px; background: var(--surface); color: var(--muted); font-size: 9px; }
+.ui-statusbar > div { display: flex; align-items: center; gap: 7px; }

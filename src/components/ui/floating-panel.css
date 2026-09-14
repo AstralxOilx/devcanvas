@@ -1,0 +1,18 @@
+.ui-floating-panel { position: absolute; top: 88px; width: min(var(--panel-width, 242px), calc(100% - 24px)); max-height: min(640px, calc(100% - 158px)); display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); box-shadow: 0 10px 36px var(--shadow), 0 2px 6px var(--shadow); overflow: hidden; z-index: 4; }
+.ui-floating-panel--left { left: 16px; }
+.ui-floating-panel--right { right: 16px; }
+.ui-floating-panel.is-front { z-index: 5; }
+.ui-floating-panel.is-dragging { box-shadow: 0 18px 48px var(--shadow); border-color: var(--accent-border); }
+.floating-panel-header { display: flex; align-items: center; flex-shrink: 0; min-height: 46px; padding: 7px 8px; gap: 2px; border-bottom: 1px solid var(--border); background: var(--surface-soft); }
+.floating-panel-drag { display: flex; align-items: center; gap: 5px; flex: 1; min-width: 0; align-self: stretch; background: transparent; text-align: left; color: var(--text); padding: 4px 0; cursor: grab; touch-action: none; user-select: none; border-radius: 4px; }
+.floating-panel-drag:active { cursor: grabbing; }
+.floating-panel-drag > svg { color: var(--muted); }
+.floating-panel-drag > span { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.floating-panel-actions { display: flex; gap: 1px; }
+.floating-panel-actions button { display: grid; place-items: center; width: 25px; height: 26px; padding: 3px; border-radius: 5px; background: transparent; color: var(--muted); }
+.floating-panel-actions button:hover { background: var(--accent-soft); color: var(--accent); }
+.floating-panel-body { display: flex; flex-direction: column; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--accent-border) transparent; padding-top: 15px; }
+.floating-panel-body[hidden] { display: none; }
+.ui-floating-panel.is-minimized .floating-panel-header { border-bottom: 0; }
+.floating-panel-body > * { flex-shrink: 0; }
+.floating-panel-body .layer-list, .floating-panel-body .library-content { overflow: visible; }

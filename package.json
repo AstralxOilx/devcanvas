@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "tauri": "tauri",
+    "desktop": "tauri dev",
+    "desktop:build": "tauri build",
     "lint": "eslint .",
     "test:flowchart": "node --test tests/flowchart.test.ts",
     "preview": "vite preview"
@@ -20,6 +23,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2",
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",

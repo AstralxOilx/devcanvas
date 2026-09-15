@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createConnection, createFlowNode, createFlowTemplate, flowNodeOptions, flowTemplateOptions, portPoint, removeFlowItem, resolveConnection } from '../src/features/canvas/flowchart/index.ts'
-import { defaultStyle, readBoard } from '../src/features/canvas/model.ts'
+import { defaultStyle, normalizeTableData, readBoard } from '../src/features/canvas/model.ts'
 
 test('connectors follow moved nodes without mutating stored geometry', () => {
   const a = createFlowNode('process', { x: 100, y: 100 }, defaultStyle)
@@ -73,6 +73,13 @@ test('the complete symbol library creates unique, valid connectable nodes', () =
   assert.deepEqual(nodes.map(node => node.flowKind), flowNodeOptions.map(option => option.kind))
   assert.ok(nodes.every(node => node.w > 0 && node.h > 0 && node.text.length > 0))
   for (let index = 1; index < nodes.length; index++) assert.ok(createConnection({ from: nodes[index - 1].id, to: nodes[index].id }, nodes, defaultStyle))
+})
+
+test('table data remains rectangular after adding or loading uneven cells', () => {
+  const table = createFlowNode('table', { x: 100, y: 100 }, defaultStyle)
+  assert.deepEqual(table.tableData, [['Table', 'Column 1', 'Column 2'], ['', '', ''], ['', '', '']])
+  assert.deepEqual(normalizeTableData('table', [['ID'], [1, 'Name']]), [['ID', ''], ['1', 'Name']])
+  assert.deepEqual(normalizeTableData('view', undefined), [['View', 'Column 1', 'Column 2'], ['', '', ''], ['', '', '']])
 })
 
 test('each flowchart example creates valid nodes and linked edges', () => {

@@ -1,7 +1,7 @@
 import type { Connection, DrawingStyle, FlowNodeKind, Port, Shape } from '../model'
 
 export type FlowNodeOption = { kind: FlowNodeKind; name: string; description: string; group: 'Basic' | 'Data & documents' | 'Storage' | 'Manual & special' | 'Connectors & logic' }
-export type FlowTemplateId = 'simple' | 'decision' | 'data'
+export type FlowTemplateId = 'simple' | 'decision' | 'data' | 'architecture' | 'er-diagram' | 'api-diagram' | 'sequence-diagram' | 'uml-diagram'
 export const flowTemplateOptions: { id: FlowTemplateId; name: string; description: string; kinds: FlowNodeKind[] }[] = [
   { id: 'simple', name: 'Simple process', description: 'เริ่มต้น → ขั้นตอน → จบ', kinds: ['terminator', 'process', 'terminator'] },
   { id: 'decision', name: 'Decision flow', description: 'มีเงื่อนไข Yes / No', kinds: ['terminator', 'process', 'decision', 'terminator', 'terminator'] },
@@ -26,10 +26,13 @@ export function isFlowNode(shape: Shape) { return !!shape.flowKind }
 const compactKinds = new Set<FlowNodeKind>(['connector', 'merge', 'extract', 'sort', 'summing-junction', 'or'])
 export function createFlowNode(kind: FlowNodeKind, center: { x: number; y: number }, style: DrawingStyle): Shape {
   const compact = compactKinds.has(kind); const decision = kind === 'decision'
-  const w = compact ? 76 : kind === 'off-page-connector' ? 105 : decision ? 180 : kind === 'annotation' ? 180 : 190
-  const h = compact ? 76 : decision ? 130 : kind === 'terminator' || kind === 'off-page-connector' ? 70 : 88
-  const option = flowNodeOptions.find(item => item.kind === kind)!
-  return { id: crypto.randomUUID(), type: kind === 'decision' || kind === 'sort' ? 'diamond' : kind === 'connector' || kind === 'summing-junction' || kind === 'or' ? 'ellipse' : kind === 'terminator' ? 'terminator' : kind === 'input-output' ? 'input-output' : 'rectangle', flowKind: kind, x: center.x - w / 2, y: center.y - h / 2, w, h, ...style, text: option.name }
+  const tableKind = ['table', 'view', 'join-table', 'pivot-table'].includes(kind)
+  const w = tableKind ? 260 : compact ? 76 : kind === 'off-page-connector' ? 105 : decision ? 180 : kind === 'annotation' ? 180 : 190
+  const h = tableKind ? 150 : compact ? 76 : decision ? 130 : kind === 'terminator' || kind === 'off-page-connector' ? 70 : 88
+  const option = flowNodeOptions.find(item => item.kind === kind) ?? { name: kind.replaceAll('-', ' '), description: '', group: 'Data & documents' as const }
+  const tableTitle = kind === 'view' ? 'View' : kind === 'join-table' ? 'Join Table' : kind === 'pivot-table' ? 'Pivot Table' : 'Table'
+  const tableData = tableKind ? [[tableTitle, 'Column 1', 'Column 2'], ['', '', ''], ['', '', '']] : undefined
+  return { id: crypto.randomUUID(), type: kind === 'decision' || kind === 'sort' ? 'diamond' : kind === 'connector' || kind === 'summing-junction' || kind === 'or' ? 'ellipse' : kind === 'terminator' ? 'terminator' : kind === 'input-output' ? 'input-output' : 'rectangle', flowKind: kind, x: center.x - w / 2, y: center.y - h / 2, w, h, ...style, text: tableData ? '' : option.name, ...(tableData ? { tableData } : {}) }
 }
 export function portPoint(shape: Shape, port: Port) { switch (port) { case 'top': return { x: shape.x + shape.w / 2, y: shape.y }; case 'bottom': return { x: shape.x + shape.w / 2, y: shape.y + shape.h }; case 'left': return { x: shape.x, y: shape.y + shape.h / 2 }; case 'right': return { x: shape.x + shape.w, y: shape.y + shape.h / 2 } } }
 export function resolveConnection(shape: Shape, shapes: Shape[]): Shape {
@@ -57,6 +60,11 @@ export function createFlowTemplate(origin: { x: number; y: number }, style: Draw
     simple: { centers: [[280, 0], [280, 145], [280, 290]], kinds: ['terminator', 'process', 'terminator'], labels: ['Start', 'Do something', 'Done'], edges: [[0, 1, ''], [1, 2, '']] },
     decision: { centers: [[280, 0], [280, 130], [280, 300], [70, 480], [490, 480]], kinds: ['terminator', 'process', 'decision', 'terminator', 'terminator'], labels: ['Start', 'Do something', 'Ready?', 'Done', 'Try again'], edges: [[0, 1, ''], [1, 2, ''], [2, 3, 'Yes'], [2, 4, 'No']] },
     data: { centers: [[280, 0], [280, 145], [280, 290], [280, 435]], kinds: ['manual-input', 'process', 'database', 'display'], labels: ['Enter data', 'Process data', 'Store data', 'Show result'], edges: [[0, 1, ''], [1, 2, ''], [2, 3, '']] },
+    architecture: { centers: [[70, 160], [270, 160], [470, 160], [470, 330], [270, 330]], kinds: ['terminator', 'process', 'predefined-process', 'database', 'display'], labels: ['Client', 'API Gateway', 'Core Service', 'Database', 'Admin UI'], edges: [[0, 1, 'HTTP'], [1, 2, 'REST'], [2, 3, 'SQL'], [2, 4, 'Events']] },
+    'er-diagram': { centers: [[130, 120], [430, 120], [130, 310], [430, 310]], kinds: ['database', 'database', 'database', 'database'], labels: ['Users', 'Orders', 'Products', 'Order Items'], edges: [[0, 1, '1:N'], [1, 3, '1:N'], [2, 3, '1:N']] },
+    'api-diagram': { centers: [[70, 160], [260, 160], [450, 160], [450, 330]], kinds: ['terminator', 'process', 'predefined-process', 'database'], labels: ['Mobile Client', 'API Gateway', 'User Service', 'Data Store'], edges: [[0, 1, 'HTTPS'], [1, 2, 'REST'], [2, 3, 'Query']] },
+    'sequence-diagram': { centers: [[100, 90], [330, 90], [560, 90], [330, 260], [560, 260]], kinds: ['terminator', 'process', 'process', 'process', 'database'], labels: ['User', 'Web App', 'API', 'Authenticate', 'Session Store'], edges: [[0, 1, 'Request'], [1, 2, 'GET /login'], [2, 3, 'Validate'], [3, 4, 'Read token']] },
+    'uml-diagram': { centers: [[110, 130], [410, 130], [260, 340], [560, 340]], kinds: ['process', 'predefined-process', 'terminator', 'connector'], labels: ['UserService', 'AuthController', 'Actor', 'Use Case'], edges: [[2, 0, 'uses'], [0, 1, 'calls'], [1, 3, 'implements']] },
   }
   const { centers, kinds, labels, edges: links } = templates[template]
   const nodes = kinds.map((kind, index) => ({ ...createFlowNode(kind, { x: origin.x + centers[index][0], y: origin.y + centers[index][1] }, style), text: labels[index] }))

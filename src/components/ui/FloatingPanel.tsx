@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import type { CSSProperties, KeyboardEvent, PointerEvent, ReactNode } from 'react'
 import { IconFocusCentered, IconChevronDown, IconGripVertical, IconMinus, IconX } from '@tabler/icons-react'
 import { clampPanelPosition } from './floatingPanelPosition'
+import { useLanguage } from '../../i18n/LanguageProvider'
 import type { PanelPosition } from './floatingPanelPosition'
 import './floating-panel.css'
 
@@ -19,6 +20,7 @@ type FloatingPanelProps = {
 }
 
 export function FloatingPanel({ title, icon, children, open, onClose, side = 'left', width = 242, active = false, onActivate, className = '' }: FloatingPanelProps) {
+  const { tr } = useLanguage()
   const [position, setPosition] = useState<PanelPosition | null>(null)
   const [minimized, setMinimized] = useState(false)
   const [dragging, setDragging] = useState(false)
@@ -86,11 +88,11 @@ export function FloatingPanel({ title, icon, children, open, onClose, side = 'le
   const panelStyle = { '--panel-width': `${width}px`, ...(position ? { left: position.x, top: position.y, right: 'auto' } : {}) } as CSSProperties
   return <aside ref={panelRef} aria-labelledby={titleId} className={`ui-floating-panel ui-floating-panel--${side} ${active ? 'is-front' : ''} ${minimized ? 'is-minimized' : ''} ${dragging ? 'is-dragging' : ''} ${className}`} style={panelStyle} onPointerDownCapture={onActivate} onFocusCapture={onActivate}>
     <div className="floating-panel-header">
-      <button type="button" className="floating-panel-drag" aria-label={`Move ${title} window`} title="Drag to move · Arrow keys to move · Double-click to reset" onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={event => finishDrag(event)} onPointerCancel={event => finishDrag(event, true)} onLostPointerCapture={() => { drag.current = null; setDragging(false) }} onKeyDown={moveByKeyboard} onDoubleClick={() => setPosition(null)}><IconGripVertical size={12} />{icon}<span id={titleId}>{title}</span></button>
+      <button type="button" className="floating-panel-drag" aria-label={tr(`ย้ายหน้าต่าง ${title}`, `Move ${title} window`)} title={tr('ลากเพื่อย้าย · กดปุ่มลูกศรเพื่อย้าย · ดับเบิลคลิกเพื่อคืนค่า', 'Drag to move · Arrow keys to move · Double-click to reset')} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={event => finishDrag(event)} onPointerCancel={event => finishDrag(event, true)} onLostPointerCapture={() => { drag.current = null; setDragging(false) }} onKeyDown={moveByKeyboard} onDoubleClick={() => setPosition(null)}><IconGripVertical size={12} />{icon}<span id={titleId}>{title}</span></button>
       <div className="floating-panel-actions">
-        <button type="button" aria-label={`Restore ${title} to default position`} title="คืนตำแหน่งเริ่มต้น" onClick={() => setPosition(null)}><IconFocusCentered size={14} /></button>
-        <button type="button" aria-label={`${minimized ? 'Expand' : 'Minimize'} ${title}`} aria-expanded={!minimized} aria-controls={bodyId} title={minimized ? 'Expand' : 'Minimize'} onClick={() => setMinimized(!minimized)}>{minimized ? <IconChevronDown size={15} /> : <IconMinus size={15} />}</button>
-        <button type="button" aria-label={`Close ${title}`} title="Close window" onClick={() => { setMinimized(false); onClose() }}><IconX size={15} /></button>
+        <button type="button" aria-label={tr(`คืนตำแหน่งเริ่มต้นของ ${title}`, `Restore ${title} to default position`)} title={tr('คืนตำแหน่งเริ่มต้น', 'Restore default position')} onClick={() => setPosition(null)}><IconFocusCentered size={14} /></button>
+        <button type="button" aria-label={tr(`${minimized ? 'ขยาย' : 'ย่อ'} ${title}`, `${minimized ? 'Expand' : 'Minimize'} ${title}`)} aria-expanded={!minimized} aria-controls={bodyId} title={tr(minimized ? 'ขยาย' : 'ย่อ', minimized ? 'Expand' : 'Minimize')} onClick={() => setMinimized(!minimized)}>{minimized ? <IconChevronDown size={15} /> : <IconMinus size={15} />}</button>
+        <button type="button" aria-label={tr(`ปิด ${title}`, `Close ${title}`)} title={tr('ปิดหน้าต่าง', 'Close window')} onClick={() => { setMinimized(false); onClose() }}><IconX size={15} /></button>
       </div>
     </div>
     <div id={bodyId} className="floating-panel-body" hidden={minimized}>{children}</div>

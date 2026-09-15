@@ -3,6 +3,7 @@
 .theme-trigger:hover, .theme-trigger[aria-expanded=true] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); }
 .theme-trigger-dot { height: 6px; width: 6px; border-radius: 50%; }
 .theme-popover { position: absolute; top: calc(100% + 13px); right: 0; width: 292px; max-height: calc(100dvh - 90px); overflow-y: auto; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 13px; box-shadow: 0 12px 48px var(--shadow); }
+.theme-popover-portal { position: fixed; z-index: 120; max-height: calc(100dvh - 16px); }
 .theme-heading { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; color: var(--accent); }
 .theme-heading > svg { margin-top: 2px; }
 .theme-heading strong { color: var(--text); font-size: 13px; font-weight: 600; }

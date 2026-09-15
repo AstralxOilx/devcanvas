@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent, PointerEvent, ReactNode } from 'react'
 import { IconFocusCentered, IconGripVertical } from '@tabler/icons-react'
 import { clampPanelPosition } from './floatingPanelPosition'
+import { useLanguage } from '../../i18n/LanguageProvider'
 import type { PanelPosition } from './floatingPanelPosition'
 import './floating-toolbar.css'
 
@@ -15,6 +16,7 @@ type FloatingToolbarProps = {
 }
 
 export function FloatingToolbar({ label, children, hint, active, onActivate, className = '' }: FloatingToolbarProps) {
+  const { tr } = useLanguage()
   const elementRef = useRef<HTMLDivElement>(null)
   const gesture = useRef<{ id: number; x: number; y: number; origin: PanelPosition } | null>(null)
   const [position, setPosition] = useState<PanelPosition | null>(null)
@@ -75,9 +77,9 @@ export function FloatingToolbar({ label, children, hint, active, onActivate, cla
 
   return <div ref={elementRef} className={`ui-floating-toolbar ${active ? 'is-front' : ''} ${dragging ? 'is-dragging' : ''} ${className}`} style={position ? { left: position.x, top: position.y, transform: 'none' } : undefined} onPointerDownCapture={onActivate} onFocusCapture={onActivate}>
     <div className="ui-toolbar floating-toolbar-surface" role="toolbar" aria-label={label}>
-      <button className="floating-toolbar-handle" type="button" aria-label={`Move ${label}`} title="Drag to move · Arrow keys to move · Double-click to reset" onPointerDown={start} onPointerMove={move} onPointerUp={event => stop(event)} onPointerCancel={event => stop(event, true)} onLostPointerCapture={() => { gesture.current = null; setDragging(false) }} onKeyDown={keyMove} onDoubleClick={() => setPosition(null)}><IconGripVertical size={18} /></button>
+      <button className="floating-toolbar-handle" type="button" aria-label={tr(`ย้าย ${label}`, `Move ${label}`)} title={tr('ลากเพื่อย้าย · กดปุ่มลูกศรเพื่อย้าย · ดับเบิลคลิกเพื่อคืนค่า', 'Drag to move · Arrow keys to move · Double-click to reset')} onPointerDown={start} onPointerMove={move} onPointerUp={event => stop(event)} onPointerCancel={event => stop(event, true)} onLostPointerCapture={() => { gesture.current = null; setDragging(false) }} onKeyDown={keyMove} onDoubleClick={() => setPosition(null)}><IconGripVertical size={18} /></button>
       <div className="floating-toolbar-tools">{children}</div>
-      <button className="floating-toolbar-reset" type="button" aria-label={`Restore ${label} to default position`} title="คืนตำแหน่งเริ่มต้น" onClick={() => setPosition(null)}><IconFocusCentered size={17} /></button>
+      <button className="floating-toolbar-reset" type="button" aria-label={tr(`คืนตำแหน่งเริ่มต้นของ ${label}`, `Restore ${label} to default position`)} title={tr('คืนตำแหน่งเริ่มต้น', 'Restore default position')} onClick={() => setPosition(null)}><IconFocusCentered size={17} /></button>
     </div>
     {hint && <div className="floating-toolbar-hint">{hint}</div>}
   </div>

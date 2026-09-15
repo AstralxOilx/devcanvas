@@ -1,0 +1,15 @@
+.workspace-navigation.application-menu { position: relative; z-index: 10; overflow: visible; padding: 4px 12px; justify-content: flex-start; }
+.application-logo { display: inline-flex; align-items: center; gap: 7px; margin-right: 16px; color: var(--text); text-decoration: none; }
+.application-logo span { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 8px; background: var(--accent); color: var(--surface); transform: rotate(-6deg); }
+.application-logo strong { font-size: 14px; letter-spacing: -.3px; }
+.application-menubar { display: flex; align-items: center; gap: 2px; }
+.application-menu-group { position: relative; }
+.application-menu-group > button { padding: 7px 12px; border-radius: 5px; background: transparent; color: var(--text-secondary); font-size: 13px; }
+.application-menu-group > button:hover, .application-menu-group > button[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+.application-menu-popup { position: absolute; top: calc(100% + 5px); left: 0; width: 278px; padding: 5px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface); box-shadow: 0 10px 30px var(--shadow); max-height: calc(100dvh - 64px); overflow-y: auto; }
+.application-menu-popup button { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 7px 9px; border-radius: 5px; background: transparent; color: var(--text); text-align: left; font-size: 13px; }
+.application-menu-popup button:focus-visible, .application-menu-popup button:hover:not(:disabled) { outline: none; background: var(--accent-soft); color: var(--accent); }
+.application-menu-popup kbd { margin-left: auto; font-size: 10px; white-space: nowrap; }
+.application-menu-check { width: 14px; flex-shrink: 0; color: var(--accent); }
+.application-menu-separator { height: 1px; margin: 5px 8px; background: var(--border); }
+@media (max-width: 640px) { .application-logo { margin-right: 5px; } .application-logo strong { display: none; } .application-logo span { width: 28px; height: 28px; } .application-menu-group { position: static; } .application-menu-popup { top: calc(100% - 1px); left: 8px; width: min(278px, calc(100vw - 16px)); } .application-menu-group > button { padding-inline: 10px; } }

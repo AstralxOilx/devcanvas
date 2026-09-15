@@ -7,6 +7,32 @@
 .flow-library-hero strong { color: var(--text); font-size: 12px; font-weight: 650; }
 .flow-library-hero p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
 .flow-library-actions { display: grid; grid-template-columns: 1fr; gap: 7px; margin: 10px 0 4px; }
+.diagram-shape-library { margin-top: 15px; }
+.diagram-shape-group { margin: 6px 0; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-soft); }
+.diagram-shape-group summary { display: flex; align-items: center; justify-content: space-between; padding: 9px 10px; cursor: pointer; color: var(--text-secondary); font-size: 10px; font-weight: 650; }
+.diagram-shape-group summary span { min-width: 18px; padding: 2px 5px; border-radius: 99px; background: var(--surface); color: var(--muted); font-size: 9px; text-align: center; }
+.diagram-shape-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; padding: 0 6px 6px; }
+.diagram-shape-grid button { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 6px; border: 1px solid transparent; border-radius: 7px; background: var(--surface); color: var(--text-secondary); text-align: left; }
+.diagram-shape-grid button:hover, .diagram-shape-grid button.active { border-color: var(--accent-border); background: var(--accent-soft); color: var(--accent); }
+.diagram-shape-grid svg { width: 34px; height: 24px; flex: 0 0 34px; }
+.diagram-shape-grid span { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
+.diagram-shape-grid strong { overflow: hidden; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.diagram-shape-grid small { overflow: hidden; color: var(--muted); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.relationship-line-library { margin-top: 15px; }
+.relationship-orientation-note { margin: -4px 0 7px; color: var(--muted); font-size: 9px; }
+.relationship-line-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.relationship-line-grid button { display: flex; align-items: center; flex-direction: column; gap: 4px; padding: 8px 5px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-soft); color: var(--text-secondary); text-align: center; }
+.relationship-line-grid button:hover, .relationship-line-grid button.active { border-color: var(--accent-border); background: var(--accent-soft); color: var(--accent); }
+.relationship-line-grid svg { width: 100%; height: 22px; }
+.relationship-line-grid span { display: flex; flex-direction: column; gap: 2px; }
+.relationship-line-grid strong { font-size: 9px; }
+.relationship-line-grid small { color: var(--muted); font-size: 8px; line-height: 1.3; }
+.flow-addon-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0 5px; padding: 13px; border: 1px solid var(--accent-border); border-radius: 11px; background: linear-gradient(135deg, var(--accent-soft), var(--surface)); }
+.flow-addon-card > div { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.flow-addon-kicker { color: var(--accent); font-size: 8px; font-weight: 750; letter-spacing: .1em; }
+.flow-addon-card strong { color: var(--text); font-size: 13px; }
+.flow-addon-card small { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.flow-addon-card button { flex: 0 0 auto; padding: 8px 10px; border-radius: 7px; background: var(--accent); color: var(--surface); font-size: 11px; font-weight: 650; }
 .flow-symbol-group { margin-top: 17px; }
 .flow-symbol-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
 .flow-symbol-heading h3 { margin: 0; color: var(--text-secondary); font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
@@ -26,6 +52,7 @@
 .flow-template-section { margin-top: 18px; }
 .flow-template-picker { display: grid; gap: 5px; margin: 0 0 3px; padding: 7px; border-radius: 9px; background: var(--surface-soft); }
 .flow-template-picker button { display: flex; align-items: center; flex-direction: column; gap: 5px; width: 100%; padding: 9px 7px; border-radius: 7px; background: var(--surface); color: var(--text-secondary); text-align: center; }
+.flow-template-picker .flow-template-featured { border: 0; background: var(--surface); }
 .flow-template-picker button:hover, .flow-template-picker button:focus-visible { background: var(--accent-soft); color: var(--accent); outline: 0; }
 .flow-template-picker .flow-template-preview { flex: 0 0 auto; width: 100%; height: 62px; color: var(--accent); overflow: visible; }
 .flow-template-preview text { font-family: inherit; font-size: 6px; text-anchor: middle; }
